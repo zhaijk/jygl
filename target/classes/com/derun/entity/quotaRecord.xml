@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+    
+<mapper namespace="com.derun.entity.QuotaRecordMapper">
+	<cache />     	  
+	<select id="findBY" parameterType="hashmap" resultType="cardputout">
+    	select  * from Card_Putout     
+    	<where>
+    		<if test="cardcode!=null and cardcode!='null'">
+    			<!-- cardcode like CONCAT('%',#{cardcode},'%') -->
+    			and cardcode like '%${cardcode}%'
+    		</if>
+    		<if test="oiltype!=null and oiltype!='null'">
+    			and oiltype = #{oiltype}
+    		</if>    		
+    		<if test="fromDate!=null and fromDate!='null' and fromDate!=''">
+    			and providedate >= #{fromDate}
+    		</if>
+    		<if test="dateTo!=null and dateTo!='null' and dateTo!=''">
+    			and #{dateTo} >= providedate  
+    		</if>	
+    	</where>  
+    	<choose>
+    		<when test="index==0">
+    			order by provideDate ,provideTime ${orderby}  
+    		</when>
+    		<when test="index==4">
+    			order by sendflag ${orderby}
+    		</when>
+    		<otherwise>
+    			order by provideDate ,provideTime asc
+    		</otherwise>
+    	</choose>  	
+    	<if test="limitM!=null and limitN!=null">
+    	limit #{limitM} ,#{limitN}
+    	</if>
+    </select>
+</mapper>  

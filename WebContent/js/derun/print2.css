@@ -1,0 +1,14 @@
+.table{
+	position:absolute;
+	left:20%;
+	
+	width:50%;	
+}
+table,td,th{
+	padding:10px;
+	border-collapse:collapse;
+	text-align:center; 
+	border:3px solid #add9c0; 
+	border-width:2px 2px 2px 2px; 
+	cell-spaceing:10px;
+}

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+<mapper namespace="com.derun.entity.DailyRecordMapper">
+	<resultMap type="com.derun.entity.DailyRecord" id="daily_report">		
+		<result column="operatedate" property="date"/>
+		<result column="operatetime" property="time"/>
+		<result column="operatetype" property="type"/>
+		<result column="operatorname" property="name"/>
+		<result column="tmemo" property="tmemo"/>
+	</resultMap>
+	<cache />     	 
+	
+	<select id="findBy" parameterType="hashmap" resultMap="daily_report">
+    	select  * from daily_record
+    	<where>
+    		<if test="username!=null and username!='null'">
+    			and operatorName = #{username}
+    		</if>
+    		<if test="fromDate!=null and fromDate!='null' and fromDate!=''">
+    			and operateDate >= #{fromDate}
+    		</if>
+    		<if test="dateTo!=null and dateTo!='null' and dateTo!=''">
+    			and #{dateTo} >= operateDate 
+    		</if>	
+    	</where>  
+    	<choose>
+    		<when test="index==0">
+    			order by operatedate ${orderby} ,operatetime ${orderby}  
+    		</when>
+    		<when test="index==2">
+    			order by operatetype ${orderby}
+    		</when>
+    		<otherwise>
+    			order by operatedate desc,operatetime desc
+    		</otherwise>
+    	</choose>  	
+    	<if test="limitM!=null and limitN!=null">
+    	limit #{limitM} ,#{limitN}
+    	</if>
+    </select>
+</mapper>  

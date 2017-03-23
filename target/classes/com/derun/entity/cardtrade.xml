@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+    
+<mapper namespace="com.derun.entity.tradeinfoMapper">
+	<cache />     	  
+	<select id="findBY" parameterType="hashmap" resultType="cardtrade">
+    	select  * from Card_Trade     
+    	<where>
+    		<if test="cardcode!=null and cardcode!='null'">
+    			<!-- cardcode like CONCAT('%',#{cardcode},'%') -->
+    			and cardcode like '%${cardcode}%'
+    		</if>
+    		<if test="oiltype!=null and oiltype!='null'">
+    			and oiltype = #{oiltype}
+    		</if>
+    		<if test="guncode!=null and guncode!='255'">
+    			and guncode = #{guncode}
+    		</if>
+    		<if test="fromDate!=null and fromDate!='null' and fromDate!=''">
+    			and tradedate >= #{fromDate}
+    		</if>
+    		<if test="dateTo!=null and dateTo!='null' and dateTo!=''">
+    			and #{dateTo} >= tradedate  
+    		</if>	
+    	</where>  
+    	<choose>
+    		<when test="index==0">
+    			order by TradeDate ,TradeTime ${orderby}  
+    		</when>
+    		<when test="index==6">
+    			order by mileage ${orderby}
+    		</when>
+    		<when test="index==7">
+    			order by SendFlag ${orderby}
+    		</when>
+    		<otherwise>
+    			order by TradeDate ,TradeTime asc
+    		</otherwise>
+    	</choose>  	
+    	<if test="limitM!=null and limitN!=null">
+    	limit #{limitM} ,#{limitN}		  
+    	</if>
+    </select>       	  
+    <select id="findALL" resultType="cardtrade">
+    	select  * from Card_Trade  order by TradeDate DESC ,TradeTime DESC
+    </select>    
+    <select id="totalCounter" resultType="int">
+    	select count(*) as count from Card_Trade
+    </select>
+    <insert id="insertOne"  parameterType="cardtrade" >
+    	insert into  Card_Trade	 values(#{TradeDate},#{TradeTime},#{TradeType},#{GunCode},#{OilType},#{CardCode},
+    	        #{CardType},#{Volumn},#{mileage},#{Balance},#{SendFlag},#{StationID},
+    	        #{CardMoney},#{TFlag},#{OperatorName})
+    </insert>
+   <!-- (TradeDate ,TradeTime,TradeType,GunCode,OilType,CardCode,
+    	                        CardType,Volumn,mileage,Balance,SendFlag,StationID,
+    	                        CardMoney,TFlag,OperatorName) -->
+   <select id="findOfflineALL" resultType="cardtrade">
+   		select *  from card_trade_offline order by TradeDate desc,TradeTime DESC
+   </select>
+   <select id="findOnlineALL" resultType="cardtrade">
+   		select *  from card_trade_online order by TradeDate desc,TradeTime DESC
+   </select> 	                        
+</mapper>  

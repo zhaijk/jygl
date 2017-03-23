@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/security 
+	http://www.springframework.org/schema/security/spring-security-3.1.xsd
+	http://www.springframework.org/schema/context   
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd  
+	">
+	<!-- 
+	<http pattern="/**/*.jpg" filter="none" />
+	<http pattern="/**/*.png" security="none" />	
+	<http pattern="/**/*.gif" security="none" />	
+	<http pattern="/**/*.ico" security="none" />
+	<http pattern="/**/*.js" security="none" />
+	<http pattern="/**/*.css" security="none" />
+	<http pattern="/**/*.woff" security="none" />	
+	<http pattern="/**/*.eot" security="none" />
+	<http pattern="/**/*.map" security="none" />
+	 -->
+	<http pattern="/css/**" security="none"/>
+	<http pattern="/fonts/**" security="none"/>
+	<http pattern="/images/**" security="none"/>
+	<http pattern="/js/**" security="none"/>
+    <http pattern="/**/*.ico" security="none"/>       
+	<http pattern="/" security="none"/>
+	<!-- <http pattern="/download/**" security="none"/> -->	
+	<http pattern="/404" security="none"/>
+	<http pattern="/505" security="none"/>
+	<http pattern="/403" security="none"/>
+	<http pattern="/401" security="none"/>	
+   	<http use-expressions="true" ><!-- entry-point-ref="authenticationEntryPoint"> -->
+   		
+   		<form-login login-page="/"  login-processing-url="/log_in" default-target-url="/monitor.htm" />
+   		   
+   		<access-denied-handler error-page="/403"/>	
+   		
+   		<logout logout-success-url="/"/>
+   		
+   		<session-management invalid-session-url="/404">
+   			<concurrency-control max-sessions="1" />
+   		</session-management>
+   		<custom-filter ref="MyFilterSecurityInterceptor" before="FILTER_SECURITY_INTERCEPTOR"/>
+   		<!-- <intercept-url pattern="/**" access="isAuthenticated()" /> -->
+   		<!-- <intercept-url pattern="/**" access="ROLE_USER,ROLE_ADMIN"/> -->
+   		
+   		<!-- <intercept-url pattern="/**" access="hasRole('ROLE_USER') and hasIpAddress('127.0.0.1')"/> -->
+   		<intercept-url pattern="/**" access="isAuthenticated()" />
+   		
+   	</http>
+	<!-- <debug/> -->
+	<authentication-manager alias="myAuthenticationManager">
+		<authentication-provider user-service-ref="MyUserDetailService">	 		
+		</authentication-provider>
+	</authentication-manager>	
+	<!-- 
+			<password-encoder hash="md5">
+				<salt-source system-wide="derun"/>
+			</password-encoder>
+			<user-service>
+				<user name="user" password="bb7c72e9bfdb5a27ba273d5828de38b2" authorities="ROLE_USER"/>
+			</user-service>
+			 -->
+	<!-- <jdbc-user-service data-source-ref="datasource"/> -->
+	
+	<global-method-security secured-annotations="enabled" jsr250-annotations="enabled"/>
+	
+	<context:component-scan base-package="com.derun.authority"/>
+	
+	<!--  
+    <beans:bean id="authenticationEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+        <beans:property name="loginFormUrl" value="/"></beans:property>
+    </beans:bean>
+    
+    <authentication-manager alias="myAuthenticationManager">
+		<authentication-provider user-service-ref="myUserDetailServiceImpl" />
+	</authentication-manager>
+	-->
+</beans:beans>

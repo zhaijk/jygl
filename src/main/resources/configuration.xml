@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE configuration     
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"     
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	
+    <typeAliases>
+        <typeAlias type="com.derun.entity.userinfo" 		alias="userinfo" />
+        <typeAlias type="com.derun.entity.cardtrade" 		alias="cardtrade" />
+        <typeAlias type="com.derun.entity.cheerMachine" 	alias="cheerMachine" />
+        <typeAlias type="com.derun.entity.commportInfo" 	alias="commportinfo" />
+        <typeAlias type="com.derun.entity.Blacklist" 		alias="blacklist" />
+        <typeAlias type="com.derun.entity.CardPutout" 		alias="cardputout" />
+    </typeAliases>  
+	
+	<!-- 
+    <environments default="development">  
+        <environment id="development">  
+            <transactionManager type="jdbc" />  
+            <dataSource type="POOLED">  
+                <property name="driver" value="com.mysql.jdbca.Driver" />  
+                <property name="url" value="  jdbc:mysql://localhost:3306/jygl?useUnicode=true&amp;characterEncoding=utf-8"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+            </dataSource>  
+        </environment>  
+    </environments>
+     -->
+     
+    <mappers>    
+        <mapper class="com.derun.entity.BlackListMapper"/>
+        <mapper class="com.derun.entity.CarColorMapper"/>
+        <mapper class="com.derun.entity.CardAllputoutMapper"/>
+        <mapper class="com.derun.entity.CardPutoutMapper"/>
+        <mapper class="com.derun.entity.CardTypeMapper"/>
+        <mapper class="com.derun.entity.CarTypeMapper"/>
+        <mapper class="com.derun.entity.CarTypeClassMapper"/>
+        <mapper class="com.derun.entity.cheerinfoMapper"/>        
+        <mapper class="com.derun.entity.commportInfoMapper"/>
+        <mapper class="com.derun.entity.DailyRecordMapper"/>        
+        <mapper class="com.derun.entity.EnterOilMapper"/>
+        <mapper class="com.derun.entity.EnterOilRecordMapper"/>
+        <mapper class="com.derun.entity.GuidelineMapper"/>
+        <mapper class="com.derun.entity.MonthJarReportMapper"/>
+        <mapper class="com.derun.entity.MonthOilReportMapper"/>
+        <mapper class="com.derun.entity.OilCanMapper"/>
+        <mapper class="com.derun.entity.OilCanRecordMapper"/>        
+        <mapper class="com.derun.entity.OilTypeMapper"/>
+        <mapper class="com.derun.entity.TradeCheckMapper"/>        
+        <mapper class="com.derun.entity.userinfoMapper"/>        
+        <mapper class="com.derun.entity.OperatorTypeMapper"/>
+        <mapper class="com.derun.entity.OperTypeMapper"/>
+        <mapper class="com.derun.entity.PassportMapper"/>
+        <mapper class="com.derun.entity.ReissueMapper"/>
+        <mapper class="com.derun.entity.ShowParaMapper"/>
+        <mapper class="com.derun.entity.SysParaMapper"/>
+        <mapper class="com.derun.entity.NameForColumnsMapper"/>
+        <mapper class="com.derun.entity.NameForColumnMapper"/>
+        <mapper class="com.derun.entity.YearJarReportMapper"/>
+		<mapper class="com.derun.entity.UsersMapper" />
+		<mapper class="com.derun.entity.RolesMapper" />
+		<mapper class="com.derun.entity.ResourceMapper"/>
+		<mapper class="com.derun.entity.AuthorityMapper"/>
+		<mapper class="com.derun.entity.User_RoleMapper"/>
+		<mapper class="com.derun.entity.Role_authorityMapper"/>
+		<mapper class="com.derun.entity.AuthorityResourceMapper"/>
+		
+    	<mapper resource="com/derun/entity/cardtrade.xml"/>
+    	<mapper resource="com/derun/entity/quotaRecord.xml"/>  	
+    	<mapper resource="com/derun/entity/oilRecord.xml"/>  
+    	<mapper resource="com/derun/entity/dailyRecord.xml"/>
+    </mappers>  
+</configuration>   

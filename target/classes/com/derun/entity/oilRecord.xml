@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+    
+<mapper namespace="com.derun.entity.OilCanRecordMapper">
+	<cache />     	  
+	<select id="findBY" parameterType="hashmap" resultType="com.derun.entity.OilCanRecord">
+    	select  * from oildigit_record     
+    	<where>
+    		<if test="tankcode!=null and tankcode!='null'">
+    			and jarcode =#{tankcode}
+    		</if>
+    		<if test="fromDate!=null and fromDate!='null' and fromDate!=''">
+    			and collectionDate >= #{fromDate}
+    		</if>
+    		<if test="dateTo!=null and dateTo!='null' and dateTo!=''">
+    			and #{dateTo} >= collectionDate  
+    		</if>	
+    	</where>  
+    	<choose>
+    		<when test="index==0">
+    			order by collectionDate ,collectionTime ${orderby}  
+    		</when>
+    		<when test="index==2">
+    			order by jarcode ${orderby}
+    		</when>
+    		<when test="index==8">
+    			order by cubage ${orderby}
+    		</when>
+    		<otherwise>
+    			order by collectionDate ,collectionTime asc
+    		</otherwise>
+    	</choose>  	
+    	<if test="limitM!=null and limitN!=null">
+    	limit #{limitM} ,#{limitN}
+    	</if>
+    </select>
+</mapper>  
