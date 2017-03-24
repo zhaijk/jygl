@@ -22,7 +22,7 @@ public class AIOAcceptHandler implements CompletionHandler<AsynchronousSocketCha
 	 } 
 	 
 	    public void failed(Throwable exc, AsynchronousServerSocketChannel attachment) { 
-	        exc.printStackTrace(); 
+	        //exc.printStackTrace(); 
 	    } 
 	 
 //	    public void startRead(AsynchronousSocketChannel socket) { 
