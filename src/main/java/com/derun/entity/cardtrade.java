@@ -12,16 +12,16 @@ public class cardtrade implements Serializable{
 	private String 	TradeTime;//消费时间
 	private String 	TradeType;//消费类型
 	private String 	GunCode;//加油枪号
-	private String 	OilType;//油品类型
+	private String 	oilType;//油品类型
 	private String 	CardCode;//卡号
 	private String 	CardType;//卡类型
 	private Double 	Volumn;	//加油量
-	private Integer 	mileage;//消费次数
-	private Double 	Balance ;//卡上余额
-	private Integer 	SendFlag;//入款标志(发放标志)
+	private Integer mileage;//消费次数
+	private Double 	 Balance ;//卡上余额
+	private Integer SendFlag;//入款标志(发放标志)
 	private String 	StationID;//助供单位代码
 	private Double 	CardMoney;//消费金额=加油量*单价
-	private Boolean 	TFlag;//上传标志
+	private Boolean TFlag;//上传标志
 	private String 	OperatorName;//操作员代码
 	
 	public String getTradeDate() {
@@ -49,10 +49,10 @@ public class cardtrade implements Serializable{
 		GunCode = gunCode;
 	}
 	public String getOilType() {
-		return OilType;
+		return oilType;
 	}
 	public void setOilType(String oilType) {
-		OilType = oilType;
+		this.oilType = oilType;
 	}
 	public String getCardCode() {
 		return CardCode;
@@ -115,6 +115,6 @@ public class cardtrade implements Serializable{
 		OperatorName = operatorName;
 	}
 	public String toString(){
-		return  TradeDate+" "+TradeTime+","+CardCode+","+TradeType+","+OilType+","+Volumn+","+mileage+","+SendFlag+","+CardMoney;
+		return  TradeDate+" "+TradeTime+","+CardCode+","+TradeType+","+oilType+","+Volumn+","+mileage+","+SendFlag+","+CardMoney;
 	}
 }

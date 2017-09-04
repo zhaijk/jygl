@@ -104,12 +104,12 @@
 <table class="table table-hover  table-bordered table-condensed display" data-toggle="table"  id="roles">
 <thead>
   <tr>
-  	<th id="1" data-field="rolestate" data-checkbox="true"></th>
+  	<th id="1" data-field="rolestate" data-checkbox="false"></th>
 	<th id="2" data-field="id">编号</th>
-	<th id="3" data-field="rolename" data-editable="true">名称</th>
-	<th id="4" data-field="roleenable" data-editable="true">enable</th>
-	<th id="5" data-field="roleis_system" data-editable="true">系统账户</th>
-	<th id="6" data-field="roledesc" data-editable="true">备注</th>					
+	<th id="3" data-field="rolename" data-editable="false">名称</th>
+	<th id="4" data-field="roleenable" data-editable="false">enable</th>
+	<th id="5" data-field="roleis_system" data-editable="false">系统账户</th>
+	<th id="6" data-field="roledesc" data-editable="false">备注</th>					
 </thead>
 <tbody> 
 <c:forEach items="${roles}" var="value" varStatus="counter">
@@ -128,6 +128,7 @@
 </div>
 </div>
 </div>
+<!-- 
 <div class="row">
 <div class="col-sm-6 col-md-6">
 <div class="block-flat">
@@ -284,6 +285,7 @@
 </div>
 </div>
 </div>
+-->
 <script type="text/javascript" 	src="js/jquery.js"></script>
 <script type="text/javascript"	src="js/bootstrap/dist/js/bootstrap.min.js"></script>
 

@@ -4,12 +4,23 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="renderer" content="webkit">
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="public">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="shortcut icon" href="images/favicon.png">
 <title>加油管理系统</title>
-
+<!--[if lt IE 9]>
+<script>
+  window.html5 = {
+  'elements': 'abbr article custom elements',
+  'shivCSS': true,
+  'shivMethods': true
+  }; 
+</script>
+<script src="js/html5shiv.js" 	type="text/JavaScript"></script>
+<script src="js/respond.js" 	type="text/JavaScript" ></script>
+<![endif]-->
 <!-- Bootstrap core CSS -->
 <link rel="stylesheet" 	type="text/css"	href="js/bootstrap/dist/css/bootstrap.css"  />
 <link rel="stylesheet"	type="text/css"	href="fonts/font-awesome-4/css/font-awesome.min.css">
@@ -110,6 +121,8 @@ body { //
 <script type="text/javascript" src="js/bootstrap.datetimepicker/js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
 <script src="js/jquery.jqprint-0.3.js" type="text/JavaScript" language="javascript"></script>
 <script src="js/jquery.printarea.js" type="text/JavaScript" ></script>
+<!-- <script src="js/html5shiv.js" type="text/JavaScript" ></script> -->
+<!-- <script src="js/respond.js" type="text/JavaScript" ></script> -->
 	<!-- 
 	<script type="text/javascript" 	src="js/jquery.js"></script>
 	<script type="text/javascript"	src="js/bootstrap/dist/js/bootstrap.min.js"></script>

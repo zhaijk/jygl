@@ -98,15 +98,20 @@
 	</div>
 </div>
 </div>
-<script type="text/javascript" 	src="js/jquery.js"></script>
+<div class="progress progress-striped active">
+	<div id="pro" class="progress-bar progress-bar-success" style="width:50%"><p id="info">上传卡机记录</p></div>
+</div>
+<!-- <script type="text/javascript" 	src="js/jquery.js"></script> -->
 <!-- <script type="text/javascript" 	src="js/flipclock/flipclock.min.js"></script> -->
-<script type="text/javascript" src="js/jquery.icheck/icheck.min.js"></script>
+<!-- <script type="text/javascript" src="js/jquery.icheck/icheck.min.js"></script>
 <script type="text/javascript"	src="js/bootstrap/dist/js/bootstrap.min.js"></script>	
 <script type="text/javascript"  src="js/bootstrap-table/bootstrap-table.js"></script>
 <script type="text/javascript" src="js/jquery.datatables/js/jquery.dataTables.min.js"></script>
+ -->
+ <script type="text/javascript" src="js/jquery.datatables/js/jquery.dataTables.min.js"></script>
 <!-- <script type="text/javascript"	src="js/jquery.nanoscroller/jquery.nanoscroller.js"></script> -->
 <!-- <script type="text/javascript" src="js/bootstrap.datetimepicker/js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script> -->
-<script type="text/javascript" 	src="js/behaviour/general.js"></script>
+<!-- <script type="text/javascript" 	src="js/behaviour/general.js"></script> -->
 <script>
 	//$(".datetime").datetimepicker({
 	//	autoclose: true,todayHighlight:true	,show:true	
@@ -151,17 +156,18 @@
 		});
 	};
 	function getSingleStatus(){
+		cheerStatus.length=0;
 		var count=0;
 		var index=1;
 		var value=0;
 		$('input[name=cheers]:checkbox').each(function(){
 			if(true == $(this).is(':checked')){
-				var obj={index:count,value:1};
+				var obj={index:index,value:1};
 				cheerStatus.push(obj);
 				count++;
 				value=index;
 			}else{
-				var obj={index:count,value:0};
+				var obj={index:index,value:0};
 				cheerStatus.push(obj);
 			}
 			index++;
@@ -193,6 +199,7 @@
 			alert('请选择');
 			return ;
 		}
+		var getTimer=window.setInterval("gettardesinfo()",1000);
 		$.ajax({
 			type:"post", 
 	        url:"uploadTrades/code", 
@@ -201,12 +208,32 @@
 	        data:JSON.stringify(cheerStatus),
 			success:function(data){
 				alert(data);
+				window.clearInterval(getTimer);
+			},
+			error:function(xhr){
+				alert(xhr.status);
+				window.clearInterval(getTimer);
+			}
+		});
+	});
+	function gettardesinfo(){
+		$.ajax({
+			type:"get", 
+	        url:"getUploadInfo/trades",
+	        //contentType:"application/json;charset=UTF-8",               
+	        //data:JSON.stringify(cheerStatus),
+			success:function(data){
+				info=data.split(",");
+				value=Math.round(Number(info[1])*100/Number(info[2]));
+				pro=value+'%';
+				$('#pro').css("width",pro);
+				$('#info').text(info[0]+'号卡机 上传了'+info[1]+'条'+' 共有'+info[2]+'条 '+pro);
 			},
 			error:function(xhr){
 				alert(xhr.status);
 			}
 		});
-	});
+	}
 </script>        
 </body>
 </html>

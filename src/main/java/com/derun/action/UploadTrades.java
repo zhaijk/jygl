@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.derun.commnuication.UploadCardTrades;
 import com.derun.dao.CheerinfoDAO;
 import com.derun.dao.TradeDAO;
 import com.derun.entity.cardtrade;
@@ -20,6 +21,8 @@ public class UploadTrades {
 	private CheerinfoDAO cheerDAO;
 	@Autowired
 	private TradeDAO tradeDAO;
+	@Autowired
+	private UploadCardTrades oper; 
 	
 	@RequestMapping(value="/uploadTrades.htm",method=RequestMethod.GET)	
 	public String init(ModelMap model){
@@ -29,20 +32,25 @@ public class UploadTrades {
 		model.put("trades", trades);	
 		return "uploadTrades";
 	}
-	@RequestMapping(value="uploadTrades/all",method=RequestMethod.POST)
-	@ResponseBody
-	public String all(@RequestBody CheerStatus[] objs){
-		for(CheerStatus obj:objs){
-			System.out.println(obj.getIndex()+"-"+obj.getValue());
-		}
-		return "uploadTrades/all sucess";
-	}
 	@RequestMapping(value="uploadTrades/code",method=RequestMethod.POST)
 	@ResponseBody
-	public String code(@RequestBody CheerStatus[] objs){	
-		for(CheerStatus obj:objs){
-			System.out.println(obj.getIndex()+"-"+obj.getValue());
+	public String all(@RequestBody CheerStatus[] objs){
+		for(CheerStatus obj:objs){			
+			if(obj.getValue()==1){				
+				oper.setGunid(obj.getIndex());
+				//oper.setCounter(0);
+				oper.upload();
+//				while(true){
+//					if(oper.getCounter()>=oper.getGunid())break;
+//					//System.out.println(oper.getGunid()+"号卡机"+" 下载了"+oper.getCounter()+" 共有"+oper.getTotal());
+//				}
+			}
 		}
-		return "uploadTrades/code success";
+		return "success";
+	}	
+	@RequestMapping(value="getUploadInfo/trades",method=RequestMethod.GET,produces="text/plain;utf-8")	
+	@ResponseBody
+	public String getDownloadInfo(){		
+		return oper.getGunid()+","+oper.getCounter()+","+oper.getTotal();	
 	}
 }

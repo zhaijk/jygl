@@ -9,7 +9,7 @@ import java.util.Map;
 public interface tradeinfoMapper {
 	//@Select("select *  from card_trade")
 	public List<cardtrade> findALL();
-	//@Insert("insert into  Card_Trade	 values(#{TradeDate},#{TradeTime},#{TradeType},#{GunCode},#{OilType},#{CardCode},"
+	//@Insert("insert into  Card_Trade	 values(#{TradeDate},#{TradeTime},#{TradeType},#{GunCode},#{oilType},#{CardCode},"
 	//        +"#{CardType},#{Volumn},#{mileage},#{Balance},#{SendFlag},#{StationID},"+
 	//        "#{CardMoney},#{TFlag},#{OperatorName})")
 	public int insertOne(cardtrade arg);
@@ -18,4 +18,9 @@ public interface tradeinfoMapper {
 	public List<cardtrade> findBY(Map<String,Object> map);
 	public List<cardtrade> findOfflineALL();
 	public List<cardtrade> findOnlineALL();
+	public int clear();
+	
+	public cardtrade findBy(String cardcode ,String mileage); 
+	public int updateOne(String cardcode ,String mileage,String tradetype); 
+	
 }

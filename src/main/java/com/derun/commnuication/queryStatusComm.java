@@ -1,9 +1,10 @@
 package com.derun.commnuication;
 
-//import org.springframework.stereotype.Service;
+//import java.text.SimpleDateFormat;
+//import java.util.Date;
 
 //@Service
-public class queryStatusComm extends abstractCommnuication{
+public class QueryStatusComm extends abstractCommnuication{
 
 	private boolean trade;   	//脱机记录 	0 没有  	1 有 	低位	
 	private boolean card;    	//卡状态   	0 没有  	1 有
@@ -17,10 +18,10 @@ public class queryStatusComm extends abstractCommnuication{
 	private byte carCardIndetifier; //车卡识别	
 	private int status;
 
-	public queryStatusComm(){
+	public QueryStatusComm(){
 		//通讯命令字、通讯命令数据、通讯响应长度、初始化输入输出区
 		//System.out.println("queryStatusComm............");
-		super.command=protocolInfo.READSTATUS;
+		super.command=ProtocolInfo.READSTATUS;
 		data=new byte[0];
 		super.respLength=5;
 		this.sendbuff=new byte[6];
@@ -29,7 +30,7 @@ public class queryStatusComm extends abstractCommnuication{
 	@Override
 	public int analyRecvbuff() {		
 			if(recvbuff[0]==4){//判断返回数据长度
-				if(recvbuff[4]==protocolInfo.fnChecksumCalc(recvbuff,1,4)){	//校验和
+				if(recvbuff[4]==ProtocolInfo.fnChecksumCalc(recvbuff,1,4)){	//校验和
 					setStatus(recvbuff[1]);
 					trade=		((recvbuff[1]&0x01)!=0);				
 					card=		((recvbuff[1]&0x02)!=0);
@@ -40,37 +41,39 @@ public class queryStatusComm extends abstractCommnuication{
 					gun=		((recvbuff[1]&0x40)!=0);
 					key=		((recvbuff[1]&0x80)!=0);
 					
-					setCarCardIndetifier(recvbuff[2]);
-									
-					if(trade==true)System.out.print("有记录");
-					else System.out.print("无记录");
-					System.out.print("-");
-					if(card==true)System.out.print("有卡");
-					else System.out.print("无卡");
-					System.out.print("-");
-					if(mileage==true)System.out.print("有里程");
-					else System.out.print("无里程");
-					System.out.print("-");
-					if(online==true)System.out.print("设备在线");
-					else System.out.print("自控");
-					System.out.print("-");
-					if(record==true)System.out.print("记录已满");
-					else System.out.print("记录未满");
-					System.out.print("-");
-					if(oiling==true)System.out.print("加油中");
-					else System.out.print("停机");
-					System.out.print("-");
-					if(gun==true)System.out.print("提枪");
-					else System.out.print("挂枪");
-					System.out.print("-");
-					if(key==true)System.out.print("等键");
-					else System.out.print("不等键");
+//					setCarCardIndetifier(recvbuff[2]);
+//					StringBuilder sbStatus=new 	StringBuilder();			
+//					if(trade==true)sbStatus.append("有记录");
+//					else sbStatus.append("无记录");
+//					sbStatus.append("-");
+//					if(card==true)sbStatus.append("有卡");
+//					else sbStatus.append("无卡");
+//					sbStatus.append("-");
+//					if(mileage==true)sbStatus.append("有里程");
+//					else sbStatus.append("无里程");
+//					sbStatus.append("-");
+//					if(online==true)sbStatus.append("设备在线");
+//					else sbStatus.append("自控");
+//					sbStatus.append("-");
+//					if(record==true)sbStatus.append("记录已满");
+//					else sbStatus.append("记录未满");
+//					sbStatus.append("-");
+//					if(oiling==true)sbStatus.append("加油中");
+//					else sbStatus.append("停机");
+//					sbStatus.append("-");
+//					if(gun==true)sbStatus.append("提枪");
+//					else sbStatus.append("挂枪");
+//					sbStatus.append("-");
+//					if(key==true)sbStatus.append("等键");
+//					else sbStatus.append("不等键");
+//					//logger.debugLog(new SimpleDateFormat("HH:mm:ss SSS").format(new Date())+":"+this.gunID+" "+this.channelID+" "+sbStatus.toString());
+//					logger.debugLog(+Thread.currentThread().getId()+" "+this.gunID+" "+this.channelID+" "+sbStatus.toString());
 					return 0;
 				}	
 			}else{
 				return -1;
-			}
-			return -1;
+		}
+		return -1;
 	}
 	
 	public int getStatus() {

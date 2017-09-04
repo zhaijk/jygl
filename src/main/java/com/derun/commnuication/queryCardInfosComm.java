@@ -4,25 +4,25 @@ package com.derun.commnuication;
 //import org.springframework.stereotype.Service;
 
 import com.derun.entity.cardinfo;
-import com.derun.protocol.protocolInfo;
+//import com.derun.protocol.protocolInfo;
 
 //@Service
 //@Scope("prototype")
-public class queryCardInfosComm extends abstractCommnuication{
+public class QueryCardInfosComm extends abstractCommnuication{
 
 	private cardinfo   cardinfo;
 	
-	public cardinfo getCardinfo() {
+	public synchronized cardinfo getCardinfo() {
 		return cardinfo;
 	}
 
-	public void setCardinfo(cardinfo cardinfo) {
+	public synchronized void setCardinfo(cardinfo cardinfo) {
 		this.cardinfo = cardinfo;
 	}
 
-	public queryCardInfosComm(){
+	public QueryCardInfosComm(){
 		//通讯命令字、通讯命令数据、通讯响应长度、初始化输入输出区
-		command=protocolInfo.READCARINFO;
+		command=ProtocolInfo.READCARINFO;
 		data=new byte[0];
 		respLength=65;
 		this.sendbuff=new byte[6];
@@ -33,10 +33,10 @@ public class queryCardInfosComm extends abstractCommnuication{
 	@Override
 	public int analyRecvbuff() {		
 		if(recvbuff[0]==64){//判断返回数据长度
-			if(recvbuff[64]==protocolInfo.fnChecksumCalc(recvbuff,1,64)){	//校验和
+			if(recvbuff[64]==ProtocolInfo.fnChecksumCalc(recvbuff,1,64)){	//校验和
 				String info=new String(recvbuff,1,62);
 				int offset=62-info.length();				
-				System.out.println(info+"---"+info.length());
+				//logger.debugLog(info+" "+info.length()+" "+offset);
 				cardinfo.setCardID(info.substring(0, 12));
 				cardinfo.setCardType(info.substring(12, 13));
 				cardinfo.setCarNumber(info.substring(13, 29-offset));
@@ -47,15 +47,18 @@ public class queryCardInfosComm extends abstractCommnuication{
 				cardinfo.setLastOilDateTime(info.substring(48-offset, 56-offset));
 				cardinfo.setLastOilValue(info.substring(56-offset, 62-offset));
 				
-				System.out.println("卡余额:"+cardinfo.getCardBanlance());
-				System.out.println("卡号:"+cardinfo.getCardID());
-				System.out.println("卡类型:"+cardinfo.getCardType());
-				System.out.println("车号:"+cardinfo.getCarNumber());				
-				System.out.println("车类型:"+cardinfo.getCarType());
-				System.out.println("入款次数:"+cardinfo.getIncomingNumber());
-				System.out.println("最后一次加油日期:"+cardinfo.getLastOilDateTime());
-				System.out.println("最后一次加油量:"+cardinfo.getLastOilValue());
-				System.out.println("消费次数:"+cardinfo.getTradeCounter());
+				
+				//logger.debugLog("卡余额:"+cardinfo.getCardBanlance());
+
+//				System.out.println("卡余额:"+cardinfo.getCardBanlance());
+//				System.out.println("卡号:"+cardinfo.getCardID());
+//				System.out.println("卡类型:"+cardinfo.getCardType());
+//				System.out.println("车号:"+cardinfo.getCarNumber());				
+//				System.out.println("车类型:"+cardinfo.getCarType());
+//				System.out.println("入款次数:"+cardinfo.getIncomingNumber());
+//				System.out.println("最后一次加油日期:"+cardinfo.getLastOilDateTime());
+//				System.out.println("最后一次加油量:"+cardinfo.getLastOilValue());
+//				System.out.println("消费次数:"+cardinfo.getTradeCounter());
 				return 0;
 			}
 		}else{

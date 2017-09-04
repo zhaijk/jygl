@@ -3,9 +3,9 @@ package com.derun.dao;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.derun.entity.Users;
@@ -14,7 +14,9 @@ import com.derun.entity.UsersMapper;
 @Repository
 public class UsersDAO implements UsersMapper{
 	
-	@Autowired
+	//@Autowired
+	//@Qualifier("sqlSession")
+	@Resource(name="sqlSession")
 	private  SqlSession session;	
 	private  UsersMapper mapper;
 	

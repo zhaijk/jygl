@@ -3,18 +3,20 @@ package com.derun.dao;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.derun.entity.OilCanRecord;
 import com.derun.entity.OilCanRecordMapper;
 
-
 @Repository
 public class OilCanRecordDAO implements OilCanRecordMapper {
 	
-	@Autowired
+	//@Autowired
+	//@Qualifier("sqlSession")
+	@Resource(name="sqlSession")
 	private SqlSession session;
 	
 	@Override

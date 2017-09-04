@@ -15,7 +15,7 @@ public interface BlackListMapper {
 	@Select("select *  from blacklist where cardcode like \"%\" #{code} \"%\"")
 	public List<Blacklist> findBy(String code);
 	@Insert("insert into blacklist values(#{cardcode})")
-	public int insertONE(Blacklist obj);
+	public int insertOne(Blacklist obj);
 	@Delete("delete from blacklist where cardcode =#{cardcode}")
 	public int deleteOne(Blacklist obj);
 	@Delete("delete from blacklist")

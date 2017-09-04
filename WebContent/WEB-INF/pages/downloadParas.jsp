@@ -48,15 +48,15 @@
     	<div class="content">
     	<div class="form-horizontal" >           
     		<div class="form-group">
-              	<label class="col-md-3 control-label">加油站名称:</label>
+              	<label class="col-md-3 control-label">加油站信息:</label>
               	<div class="col-md-7">
-                	<input  class="form-control"  value="${paras.stationName}" readonly>
+                	<input  class="form-control"  value="供应单位名称：${paras.stationName} 编码：${paras.stationCode}" readonly>
               	</div>
             </div>
             <div class="form-group">
               	<label class="col-sm-3 control-label">总队控制码:</label>
               	<div class="col-sm-7">
-                	<input  class="form-control"  value="${paras.amountCortrolCode}" readonly>
+                	<input  id="htcode" class="form-control"  value="${paras.amountCortrolCode}" readonly>
               	</div>
             </div>
             <div class="form-group">
@@ -80,7 +80,7 @@
     		<div class="form-group ">
     		<div class="col-md-3 col-md-offset-1">
         	<div class=" input-group date datetime " data-min-view="2" data-date-format="yyyy-mm-dd hh:ii">
-				<input id="setSystemClock" name="systemClock" style="width:140px;font-size:14px;" class="form-control " type="text" name="date_from" readonly>
+				<input id="setSystemClock" name="systemClock" style="width:160px;font-size:14px;" class="form-control " type="text" readonly>
 				<span  class="input-group-addon btn btn-primary" id="setClock">设置时钟
 				<span  class="glyphicon glyphicon-th" >
 				</span></span>				
@@ -88,7 +88,7 @@
 			</div>			
     		<div class="col-md-3 col-md-offset-2">
         	<div class=" input-group date datetime " data-min-view="2" data-date-format="yyyy-mm-dd hh:ii">
-				<input name="systemClock" style="width:140px;font-size:14px;" class="form-control " type="text" name="date_from" readonly>
+				<input id="getSystemClock" name="systemClock" style="width:160px;font-size:14px;" class="form-control " type="text"  readonly>
 				<span  class="input-group-addon btn btn-info" id="getClock">读取时钟
 				<span  class="glyphicon glyphicon-th" >
 				</span></span>		
@@ -107,8 +107,8 @@
     		<div class="form-group ">
     		<div class="col-md-3 col-md-offset-1">
     		<div class=" input-group ">
-        		<input name="systemClock" style="width:140px;font-size:14px;" class="form-control " type="text" name="date_from" readonly>				
-        		<input name="systemClock" style="width:140px;font-size:14px;" class="form-control " type="text" name="date_from" readonly>
+        		<input id="oiltype" name="oiltype" style="width:140px;font-size:14px;" class="form-control " type="text"  readonly>				
+        		<input name="price" style="width:140px;font-size:14px;" class="form-control " type="text"  readonly>
         		<span  class="input-group-addon btn btn-primary" id="setPriceOiltype">设置油品单价
 				<span  class="glyphicon glyphicon-th" >
 				</span></span>		        		        		 
@@ -116,8 +116,8 @@
 			</div>
 			<div class="col-md-3 col-md-offset-2">
     		<div class=" input-group ">
-        		<input name="systemClock" style="width:140px;font-size:14px;" class="form-control " type="text" name="date_from" readonly>				
-        		<input name="systemClock" style="width:140px;font-size:14px;" class="form-control " type="text" name="date_from" readonly>
+        		<input id="getoilttype" style="width:140px;font-size:14px;" class="form-control " type="text" readonly>				
+        		<input id="getprice" style="width:140px;font-size:14px;" class="form-control " type="text"  readonly>
         		<span  class="input-group-addon btn btn-info" id="getPriceOiltype">读取油品单价
 				<span  class="glyphicon glyphicon-th" >
 				</span></span>		        		        		 
@@ -167,18 +167,19 @@
 			count++;
 		});
 	};
-	function getSingleStatus(){
+	function getSingle(){
+		cheerStatus.length=0;
 		var count=0;
 		var index=1;
 		var value=0;
 		$('input[name=cheers]:checkbox').each(function(){
 			if(true == $(this).is(':checked')){
-				var obj={index:count,value:1};
+				var obj={index:index,value:1};
 				cheerStatus.push(obj);
 				count++;
 				value=index;
 			}else{
-				var obj={index:count,value:0};
+				var obj={index:index,value:0};
 				cheerStatus.push(obj);
 			}
 			index++;
@@ -205,7 +206,8 @@
 		});
 	});
 	$('#setCode').click(function(){
-		getStatus();
+		code=$('#htcode').val();
+		getStatus();		
 		//alert(cheerStatus.toString());
 		$.ajax({
 			type:"post", 
@@ -214,15 +216,18 @@
 	        contentType:"application/json;charset=UTF-8",               
 	        data:JSON.stringify(cheerStatus),
 			success:function(data){
-				alert(data);
+				$('#htcode').val(code);			
+				alert(data);				
 			},
 			error:function(xhr){
+				$('#htcode').val(code);
 				alert(xhr.status);
 			}
 		});
+		$('#htcode').val('下传联勤码.....');
 	});
 	$('#setClock').click(function(){
-		$('#setSystemClock').val('下传时钟中.....');
+		$('#setSystemClock').val('下传时钟.....');
 		getStatus();
 		//alert(cheerStatus.toString());
 		$.ajax({
@@ -240,12 +245,13 @@
 		});
 	});	
 	$('#getClock').click(function(){
-		var index=getSingleStatus();
+		var index=getSingle();
 		if ((index==-1) || (index==0)||(index==-2)){
 			alert('请单选' +index);
 			return ;
-		}
+		}		
 		//alert('单选 '+index);
+		$('#getSystemClock').val('读取时钟.....');
 		$.ajax({
 			type:"get", 
 	        url:"getCheerClock/"+index, 
@@ -253,16 +259,35 @@
 	        contentType:"application/json;charset=UTF-8",               
 	        //data:JSON.stringify(cheerStatus),
 			success:function(data){
-				alert(data);
+				$('#getSystemClock').val(data);
 			},
 			error:function(xhr){
-				alert(xhr.status);
+				$('#getSystemClock').val(xhr.status);
 			}				
 		})
 	});
 	$('#setPriceOiltype').click(function(){
 		getStatus();
-		//alert(cheerStatus.toString());
+		//var index=getSingle();
+		//if ((index==-1) || (index==0)||(index==-2)){
+		//	alert('请单选' +index);
+		//	return ;
+		//}		
+		//var oiltype=$('[name=oiltype]').val();
+		//var price=$('[name=price]').val();
+		//alert(oiltype+price);
+		//if((oiltype==null)||(oiltype=='')){
+		//	alert('请输入油品');
+		//	return ;
+		//}
+		//if((price==null)||(price=='')){
+		//	alert('请输入单价');
+		//	return ;
+		//}		
+		
+		//var obj={index:Number(oiltype),value:Number(price)};
+		//cheerStatus.push(obj);
+		//alert(JSON.stringify(cheerStatus));				
 		$.ajax({
 			type:"post", 
 	        url:"setCheers/price", 
@@ -270,20 +295,24 @@
 	        contentType:"application/json;charset=UTF-8",               
 	        data:JSON.stringify(cheerStatus),
 			success:function(data){
-				alert(data);
+				$('#oiltype').val(data);
+				//alert(data);
 			},
 			error:function(xhr){
+				//$('#oiltype').val(oiltype);
 				alert(xhr.status);
 			}
 		});
+		$('#oiltype').val('设置油品单价中...');
 	});
-	$('#getPriceOiltype').click(function(){
-		var index=getSingleStatus();
+	$('#getPriceOiltype').click(function(){		
+		var index=getSingle();
 		if ((index==-1) || (index==0)||(index==-2)){
 			alert('请单选' +index);
 			return ;
 		}
-		//alert('单选 '+index);
+		//alert('单1选2'+index);
+		$('#getoilttype').val('读取油品单价中....');
 		$.ajax({
 			type:"get", 
 	        url:"getCheerPrice/"+index, 
@@ -291,7 +320,10 @@
 	        contentType:"application/json;charset=UTF-8",               
 	        //data:JSON.stringify(cheerStatus),
 			success:function(data){
-				alert(data);
+				//alert(data);
+				//str=Split(data,',');
+				$('#getoilttype').val(data.substring(0,2));
+				$('#getprice').val(data.substring(3,5)+'.'+data.substring(5,7));
 			},
 			error:function(xhr){
 				alert(xhr.status);

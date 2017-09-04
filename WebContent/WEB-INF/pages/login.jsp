@@ -7,6 +7,11 @@
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
+	<!--[if lt IE 9]>
+
+<script src="js/html5shiv.js" 	type="text/JavaScript"></script>
+<script src="js/respond.js" 	type="text/JavaScript" ></script>
+<![endif]-->
 	<link href="js/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
 	<link rel="shortcut icon" href="gasstation.ico" type="image/x-icon"/>   	
 	<style type="text/css">
@@ -16,12 +21,15 @@
 		background-repeat:no-repeat;
 		background-attachment:fixed;
 		background-size:cover;	
+		filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
+    			src='images/background.jpg',
+    			sizingMethod='scale');
 		//background-position:50%;	
 	}	
 	</style>
   </head>  
   <body>
-   	<div class="modal-content" style="width:25%;height:32%;position:absolution;left:60%;top:45%">
+   	<div class="modal-content" style="height:32%;width:25%;position:absolution;left:60%;top:45%">
 		<div class="modal-body">
 			<hr>			
 			<form action="log_in" class="form-horizontal"	role="form" method="post">
@@ -75,6 +83,6 @@
 			$('#operatorpassword').val('');	
 		}*/
 	</script>
-   	<script src="js/bootstrap/dist/js/bootstrap.min.js"></script>    
+   	<script src="js/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -132,7 +132,7 @@ $(document).ready(function(){
     		"bSort" :true,
     		"sSearch":true,
     		"bFilter":false,
-    		"aoColumnDefs": [ { "bSortable": false, "aTargets": [ 1,2,3,4,5,8 ] }]  
+    		"aoColumnDefs": [ { "bSortable": false, "aTargets": [ 1,2,3,4,5,8,9 ] }]  
     	});
     	$('#trades tr').attr('align','center');
       	$('#check_all').on('switchChange.bootstrapSwitch', function (event, data) {
@@ -192,9 +192,9 @@ $(document).ready(function(){
   	  	    			{ "data": "volumn" },
   	  	    			{ "data": "mileage" },
   	  	    			{ "data": "sendFlag" },
-  	  	    			{ "data": "cardMoney" }
+  	  	    			{ "data": "balance" }
   	  	    		],
-  	  	    		"aoColumnDefs": [ { "bSortable": false, "aTargets": [ 1,2,3,4,5,8 ] }] ,
+  	  	    		"aoColumnDefs": [ { "bSortable": false, "aTargets": [ 1,2,3,4,5,8,9 ] }] ,
   	  	    		"initComplete": function(settings, json) {
   	  	    			//$('#search_submit').attr("disabled",false);
   	  	    			//$('#trades tr').attr('align','center');
@@ -239,9 +239,9 @@ $(document).ready(function(){
   	  	    			{ "data": "volumn" },
   	  	    			{ "data": "mileage" },
   	  	    			{ "data": "sendFlag" },
-  	  	    			{ "data": "cardMoney" }
+  	  	    			{ "data": "balance" }
       	  	  	    ],
-      	  	  		"aoColumnDefs": [ { "bSortable": false, "aTargets": [ 1,2,3,4,5,8 ] }] ,
+      	  	  		"aoColumnDefs": [ { "bSortable": false, "aTargets": [ 1,2,3,4,5,8,9 ] }] ,
       	  	  	    "initComplete": function(settings, json) {
       	  	  	    	//$('#search_submit').attr("disabled",false);
       	  	  	  		//$('#trades tr').attr('align','center');

@@ -12,6 +12,7 @@ public class machineStatus {
 	private String item4;
 	private String value4;	
 	private String commStatus;
+	private String value5;
 
 	public String getStatus() {
 		return status;
@@ -91,6 +92,14 @@ public class machineStatus {
 
 	public void setCommStatus(String commStatus) {
 		this.commStatus = commStatus;
+	}
+
+	public String getValue5() {
+		return value5;
+	}
+
+	public void setValue5(String value5) {
+		this.value5 = value5;
 	}
 	
 }

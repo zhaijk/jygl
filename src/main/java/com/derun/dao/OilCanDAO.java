@@ -2,19 +2,20 @@ package com.derun.dao;
 
 import java.util.List;
 
+import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.derun.entity.OilCan;
 import com.derun.entity.OilCanMapper;
 
-
 @Repository
 public class OilCanDAO implements OilCanMapper{
 	
-	@Autowired
+	//@Autowired
+	//@Qualifier("sqlSession")
+	@Resource(name="sqlSession")
 	private SqlSession sqlSession;
 	
 	@Override
@@ -40,5 +41,10 @@ public class OilCanDAO implements OilCanMapper{
 	@Override
 	public int updateOne(OilCan arg) {
 		return sqlSession.getMapper(OilCanMapper.class).updateOne(arg);
+	}
+
+	@Override
+	public int clear() {
+		return sqlSession.getMapper(OilCanMapper.class).clear();
 	}
 }

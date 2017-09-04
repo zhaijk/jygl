@@ -2,22 +2,19 @@ package com.derun.dao;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.derun.commnuication.finiteStateMahine;
+import com.derun.commnuication.FiniteStateMahine;
 import com.derun.entity.cardtrade;
 
-@Service
+//@Service
 public class scanTradeThread implements Runnable{
-	@Autowired
+	//@Autowired	
 	private TradeDAO trades;
 	
 	public scanTradeThread(){
-		new Thread(this,"数据插入线程");
+		//new Thread(this,"数据插入线程");
 	}
 	public void run() {
-		List<cardtrade> lstObjs=finiteStateMahine.getLstObjs();
+		List<cardtrade> lstObjs=FiniteStateMahine.getLstObjs();
 		while(true){
 			try {
 				int counter=lstObjs.size();

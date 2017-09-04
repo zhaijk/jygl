@@ -19,5 +19,7 @@ public interface CarTypeMapper {
 	public int updateOne(CarType arg);
 	@Delete("delete from cartype_dictionary where code=#{code}")
 	public int deleteOne(CarType arg);
+	@Delete("delete from cartype_dictionary ")
+	public int clear();
 
 }

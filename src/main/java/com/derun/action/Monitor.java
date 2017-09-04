@@ -7,8 +7,10 @@ import java.util.ArrayList;
 
 import javax.annotation.Resource;
 
-import com.derun.commnuication.commController;
-import com.derun.commnuication.finiteStateMahine;
+import com.derun.commnuication.CommController;
+import com.derun.commnuication.SerialPortLocal;
+import com.derun.commnuication.FiniteStateMahine;
+//import com.derun.commnuication.logger;
 import com.derun.dao.CheerinfoDAO;
 import com.derun.dao.UsersDAO;
 import com.derun.entity.cheerMachine;
@@ -40,13 +42,15 @@ public class Monitor {
 	@Autowired
 	private UsersDAO users;	
 	@Autowired
-	private commController  controller;
+	private CommController  controller;
+	@Autowired
+	private SerialPortLocal sp;
 	
 	@RequestMapping(value="setonoff/{id}",method=RequestMethod.GET)
 	@ResponseBody
 	public String setOnOff(@PathVariable int id){
-		List<finiteStateMahine> lstObjs=controller.getLstMachines();//当前IC卡机应用对象
-		for(finiteStateMahine object:lstObjs){			
+		List<FiniteStateMahine> lstObjs=controller.getLstMachines();//当前IC卡机应用对象
+		for(FiniteStateMahine object:lstObjs){			
 			if(object.getGunId()==id){
 				switch(object.getCommStatus()){
 				case 2://插卡 开机命令
@@ -62,8 +66,58 @@ public class Monitor {
 		}
 		return "failure";
 	}
+	@RequestMapping(value="closedevice/{id}",method=RequestMethod.GET)
+	@ResponseBody
+	public String closedevice(@PathVariable int id) throws InterruptedException{
+		controller.stopMachines(id);
+		//Thread.sleep(1000);
+		//sp.reOpen();
+		//controller.initMachines();
+		return "success";
+	}		
+	@RequestMapping(value="opendevice/{id}",method=RequestMethod.GET)
+	@ResponseBody
+	public String reopendevice(@PathVariable int id) throws InterruptedException{		
+		//sp.reOpen();
+		//controller.initMachines();
+		//return "success";
+		//sp.reOpen();
+		controller.initMachines(id);		
+		return "success";
+	}
+	@RequestMapping(value="reopen/port",method=RequestMethod.GET)
+	@ResponseBody
+	public String reopenport() throws InterruptedException{		
+		sp.reopen();
+		//controller.initMachines();
+		//return "success";
+		//sp.reOpen();
+		//controller.initMachines(id);		
+		return "success";
+	}
+	@RequestMapping(value="open/port",method=RequestMethod.GET)
+	@ResponseBody
+	public String openport() throws InterruptedException{		
+		sp.open();
+		//controller.initMachines();
+		//return "success";
+		//sp.reOpen();
+		//controller.initMachines(id);		
+		return "success";
+	}
+	@RequestMapping(value="close/port",method=RequestMethod.GET)
+	@ResponseBody
+	public String closeport() throws InterruptedException{		
+		sp.close();
+		//controller.initMachines();
+		//return "success";
+		//sp.reOpen();
+		//controller.initMachines(id);		
+		return "success";
+	}
+	List<machineStatus> infos=new ArrayList<machineStatus>();//返回数据
 	
-	@RequestMapping(value="oilgunInfo/{id}",method=RequestMethod.GET)	
+	@RequestMapping(value="getdevinfo/{id}",method=RequestMethod.GET)	
 	@ResponseBody
 	public Object  getOilgunInfo(@PathVariable int id){
 		
@@ -111,112 +165,222 @@ public class Monitor {
 //			if(object.getCommStatus()==0)
 //				new Thread(object).start();
 //		}
+		infos.clear();
 		machineStatus info;
-		List<machineStatus> infos=new ArrayList<machineStatus>();//返回数据
-		List<finiteStateMahine> lstObjs=controller.getLstMachines();//当前IC卡机应用对象
-		for(finiteStateMahine object:lstObjs){
-			info=new machineStatus();
-			info.setCommStatus("send:"+object.getCommCounter()+" recv:"+(object.getCommCounter()-object.getErrorCounter())+" 通道:"+(object.getChannelId()+1));
-			switch(object.getCommStatus()){
-			case 0:				
-				info.setCommStatus("通讯失败"+" 通道:"+(object.getChannelId()+1));
-				info.setStatus("等待插卡....");
-				info.setItem1("上次加油");
-				info.setItem2("上次日期");
-				info.setItem3("加油卡号");
-				info.setItem4("车辆类型");
-				info.setValue1("????.??");
-				info.setValue2("????-??-??");
-				info.setValue3("??????????");
-				info.setValue4("images/car.gif");		
+		List<FiniteStateMahine> lstObjs=controller.getLstMachines();//当前IC卡机应用对象
+		for(FiniteStateMahine object:lstObjs){
+			if(id==0){				
+				info=new machineStatus();
+				info.setCommStatus("发送:"+object.getSendCounter()+" 接收:"+(object.getRecvCounter())+" 通道:"+(object.getChannelId()+1));
+				switch(object.getCommStatus()){
+				case 0:				
+					info.setCommStatus("通讯失败"+" 通道:"+(object.getChannelId()+1));
+					info.setStatus("通讯失败");
+					info.setItem1("上次加油");
+					info.setItem2("上次日期");
+					info.setItem3("加油卡号");
+					info.setItem4("车辆类型");
+					info.setValue1("????.??");
+					info.setValue2("????-??-??");
+					info.setValue3("??????????");
+					info.setValue4("images/car.gif");		
 				break;
-			case 1:
-				info.setStatus("等待插卡....");
-				info.setItem1("上次加油");
-				info.setItem2("上次日期");
-				info.setItem3("加油卡号");
-				info.setItem4("车辆号牌");
-				String value=object.getQueryCardInfos().getCardinfo().getLastOilValue();
-				if((value!=null)&&(value.length()==6))
-					info.setValue1(value.substring(0,4)+"."+value.substring(4,6));
-				else
-					info.setValue1(object.getQueryCardInfos().getCardinfo().getLastOilValue());
-				value=object.getQueryCardInfos().getCardinfo().getLastOilDateTime();
-				if((value!=null)&&(value.length()==8))
-					info.setValue2(value.substring(0,4)+"-"+value.substring(4,6)+"-"+value.substring(6,8));
-				else
-					info.setValue2(object.getQueryCardInfos().getCardinfo().getLastOilValue());
-				//info.setValue2();
-				info.setValue3(object.getQueryCardInfos().getCardinfo().getCardID());
-				info.setValue4(object.getQueryCardInfos().getCardinfo().getCarNumber());
+				case 1:
+					info.setStatus("等待插卡....");
+					info.setItem1("上次加油");
+					info.setItem2("上次日期");
+					info.setItem3("加油卡号");
+					info.setItem4("车辆号牌");
+					String value=object.getQueryCardInfos().getCardinfo().getLastOilValue();
+					if((value!=null)&&(value.length()==6))
+						info.setValue1(value.substring(0,4)+"."+value.substring(4,6));
+					else
+						info.setValue1(object.getQueryCardInfos().getCardinfo().getLastOilValue());
+					value=object.getQueryCardInfos().getCardinfo().getLastOilDateTime();
+					if((value!=null)&&(value.length()==8))
+						info.setValue2(value.substring(0,4)+"-"+value.substring(4,6)+"-"+value.substring(6,8));
+					else
+						info.setValue2(object.getQueryCardInfos().getCardinfo().getLastOilValue());
+					//info.setValue2();
+					info.setValue3(object.getQueryCardInfos().getCardinfo().getCardID());
+					info.setValue4(object.getQueryCardInfos().getCardinfo().getCarNumber());
 				break;
-			case 2:
-				info.setStatus("(开机)");
-				info.setItem1("加油卡号");
-				info.setItem2("卡上余额");
-				info.setItem3("车辆牌号");
-				info.setItem4("消费次数");
-				info.setValue1(object.getQueryCardInfos().getCardinfo().getCardID());
-				Integer intValue=Integer.parseInt(object.getQueryCardInfos().getCardinfo().getCardBanlance());
-				value=intValue.toString();
-				value=value.substring(0,value.length()-2)+"."+value.substring(value.length()-2,value.length());
-				info.setValue2(value);
-				info.setValue3(object.getQueryCardInfos().getCardinfo().getCarNumber());
-				info.setValue4(object.getQueryCardInfos().getCardinfo().getTradeCounter());
+				case 2:
+					info.setStatus("(开机)");
+					info.setItem1("加油卡号");
+					info.setItem2("卡上余额");
+					info.setItem3("车辆牌号");
+					info.setItem4("消费次数");
+					info.setValue1(object.getQueryCardInfos().getCardinfo().getCardID());
+					String strValue=object.getQueryCardInfos().getCardinfo().getCardBanlance();
+					//logger.debugLog("卡上余额"+strValue);
+					//Integer intValue=Integer.parseInt();
+					//value=intValue.toString();
+					//value=value.substring(0,value.length()-2)+"."+value.substring(value.length()-2,value.length());
+					info.setValue2(strValue);
+					info.setValue3(object.getQueryCardInfos().getCardinfo().getCarNumber());
+					info.setValue4(object.getQueryCardInfos().getCardinfo().getTradeCounter());
 				break;
-			case 3:
-				info.setStatus("加油中 (停止加油)");
-				info.setItem1("加油卡号");
-				info.setItem2("卡上余额");
-				info.setItem3("车辆牌号");
-				info.setItem4("车辆类型");
-				info.setValue1(object.getQueryCardInfos().getCardinfo().getCardID());
-				intValue=Integer.parseInt(object.getQueryCardInfos().getCardinfo().getCardBanlance());
-				value=intValue.toString();
-				value=value.substring(0,value.length()-2)+"."+value.substring(value.length()-2,value.length());
-				info.setValue2(value);
-				//info.setValue3(object.getQueryCardInfos().getCardinfo().getCarNumber());
-				info.setValue3(object.getQueryOilNumber().getStrOilValue());
-				int carType=Integer.parseInt(object.getQueryCardInfos().getCardinfo().getCarType());
-				switch(carType){
-				case 1://小客车
-					info.setValue4("images/car.gif");
+				case 3:
+					info.setStatus("加油中 (停止加油)");
+					info.setItem1("加油卡号");
+					info.setItem2("卡上余额");
+					info.setItem3("车辆牌号");
+					info.setItem4("车辆类型");
+					info.setValue1(object.getQueryCardInfos().getCardinfo().getCardID());
+					info.setValue5(object.getQueryCardInfos().getCardinfo().getCarNumber());
+					strValue=object.getQueryCardInfos().getCardinfo().getCardBanlance();
+					info.setValue2(String.format("%.2f",(Double.parseDouble(strValue)/100)));
+					//intValue=Integer.parseInt(object.getQueryCardInfos().getCardinfo().getCardBanlance());
+					//value=intValue.toString();
+					//value=value.substring(0,value.length()-2)+"."+value.substring(value.length()-2,value.length());
+					//info.setValue2(value);
+					//info.setValue3(object.getQueryCardInfos().getCardinfo().getCarNumber());
+					info.setValue3(object.getQueryOilNumber().getStrOilValue());
+					int carType=Integer.parseInt(object.getQueryCardInfos().getCardinfo().getCarType());
+					switch(carType){
+					case 1://小客车
+						info.setValue4("images/car.gif");
 					break;
-				case 2://面包车
-					info.setValue4("images/bus.gif");
+					case 2://面包车
+						info.setValue4("images/bus.gif");
 					break;
-				case 3://大客车
+					case 3://大客车
 					info.setValue4("images/bigbus.gif");
 					break;
-				case 4://卡车
-					info.setValue4("images/truck.gif");
-					break;
-				case 5://越野车
-					info.setValue4("images/jeep.gif");
+					case 4://卡车
+						info.setValue4("images/truck.gif");
+						break;
+					case 5://越野车
+						info.setValue4("images/jeep.gif");
+						break;
+					default:
+						info.setValue4("images/car.gif");
+					}				
 					break;
 				default:
-					info.setValue4("images/car.gif");
-				}				
+					info.setCommStatus("通讯失败"+" 通道:"+(object.getChannelId()+1));
+					info.setStatus("等待插卡....");
+					info.setItem1("上次加油");
+					info.setItem2("上次日期");
+					info.setItem3("加油卡号");
+					info.setItem4("车辆类型");
+					info.setValue1("????.??");
+					info.setValue2("????-??-??");
+					info.setValue3("??????????");
+					info.setValue4("images/car.gif");		
+					break;
+				}
+				infos.add(info);				
+			}else if(id!=object.getGunId()){
+				continue;
+			}else if(id==object.getGunId()){
+				info=new machineStatus();
+				info.setCommStatus("发送:"+object.getSendCounter()+" 接收:"+(object.getRecvCounter())+" 通道:"+(object.getChannelId()+1));
+				switch(object.getCommStatus()){
+				case 0:				
+					info.setCommStatus("通讯失败"+" 通道:"+(object.getChannelId()+1));
+					info.setStatus("通讯失败");
+					info.setItem1("上次加油");
+					info.setItem2("上次日期");
+					info.setItem3("加油卡号");
+					info.setItem4("车辆类型");
+					info.setValue1("????.??");
+					info.setValue2("????-??-??");
+					info.setValue3("??????????");
+					info.setValue4("images/car.gif");		
 				break;
-			default:
-				info.setCommStatus("通讯失败"+" 通道:"+(object.getChannelId()+1));
-				info.setStatus("等待插卡....");
-				info.setItem1("上次加油");
-				info.setItem2("上次日期");
-				info.setItem3("加油卡号");
-				info.setItem4("车辆类型");
-				info.setValue1("????.??");
-				info.setValue2("????-??-??");
-				info.setValue3("??????????");
-				info.setValue4("images/car.gif");		
+				case 1:
+					info.setStatus("等待插卡....");
+					info.setItem1("上次加油");
+					info.setItem2("上次日期");
+					info.setItem3("加油卡号");
+					info.setItem4("车辆号牌");
+					String value=object.getQueryCardInfos().getCardinfo().getLastOilValue();
+					if((value!=null)&&(value.length()==6))
+						info.setValue1(value.substring(0,4)+"."+value.substring(4,6));
+					else
+						info.setValue1(object.getQueryCardInfos().getCardinfo().getLastOilValue());
+					value=object.getQueryCardInfos().getCardinfo().getLastOilDateTime();
+					if((value!=null)&&(value.length()==8))
+						info.setValue2(value.substring(0,4)+"-"+value.substring(4,6)+"-"+value.substring(6,8));
+					else
+						info.setValue2(object.getQueryCardInfos().getCardinfo().getLastOilValue());
+					//info.setValue2();
+					info.setValue3(object.getQueryCardInfos().getCardinfo().getCardID());
+					info.setValue4(object.getQueryCardInfos().getCardinfo().getCarNumber());
 				break;
-			}		
-			infos.add(info);
+				case 2:
+					info.setStatus("(开机)");
+					info.setItem1("加油卡号");
+					info.setItem2("卡上余额");
+					info.setItem3("车辆牌号");
+					info.setItem4("消费次数");
+					info.setValue1(object.getQueryCardInfos().getCardinfo().getCardID());
+					String strValue=object.getQueryCardInfos().getCardinfo().getCardBanlance();
+					//logger.debugLog("卡上余额"+strValue);
+					//Integer intValue=Integer.parseInt();
+					//value=intValue.toString();
+					//value=value.substring(0,value.length()-2)+"."+value.substring(value.length()-2,value.length());
+					info.setValue2(strValue);
+					info.setValue3(object.getQueryCardInfos().getCardinfo().getCarNumber());
+					info.setValue4(object.getQueryCardInfos().getCardinfo().getTradeCounter());
+				break;
+				case 3:
+					info.setStatus("加油中 (停止加油)");
+					info.setItem1("加油卡号");
+					info.setItem2("卡上余额");
+					info.setItem3("车辆牌号");
+					info.setItem4("车辆类型");
+					info.setValue1(object.getQueryCardInfos().getCardinfo().getCardID());
+					strValue=object.getQueryCardInfos().getCardinfo().getCardBanlance();
+					info.setValue2(strValue);
+					//intValue=Integer.parseInt(object.getQueryCardInfos().getCardinfo().getCardBanlance());
+					//value=intValue.toString();
+					//value=value.substring(0,value.length()-2)+"."+value.substring(value.length()-2,value.length());
+					//info.setValue2(value);
+					//info.setValue3(object.getQueryCardInfos().getCardinfo().getCarNumber());
+					info.setValue3(object.getQueryOilNumber().getStrOilValue());
+					int carType=Integer.parseInt(object.getQueryCardInfos().getCardinfo().getCarType());
+					switch(carType){
+					case 1://小客车
+						info.setValue4("images/car.gif");
+					break;
+					case 2://面包车
+						info.setValue4("images/bus.gif");
+					break;
+					case 3://大客车
+					info.setValue4("images/bigbus.gif");
+					break;
+					case 4://卡车
+						info.setValue4("images/truck.gif");
+						break;
+					case 5://越野车
+						info.setValue4("images/jeep.gif");
+						break;
+					default:
+						info.setValue4("images/car.gif");
+					}				
+					break;
+				default:
+					info.setCommStatus("通讯失败"+" 通道:"+(object.getChannelId()+1));
+					info.setStatus("等待插卡....");
+					info.setItem1("上次加油");
+					info.setItem2("上次日期");
+					info.setItem3("加油卡号");
+					info.setItem4("车辆类型");
+					info.setValue1("????.??");
+					info.setValue2("????-??-??");
+					info.setValue3("??????????");
+					info.setValue4("images/car.gif");		
+					break;
+				}
+				infos.add(info);
+				break;
+			}			
 		}
-		
 		return infos;
-	}
-	
+	}	
 	@RequestMapping("monitor.htm")//加载页面信息 控制器数量 参数 通讯状态 当前工作状态	
 	public String monitors(HttpServletRequest request,ModelMap cheersMap){
 		

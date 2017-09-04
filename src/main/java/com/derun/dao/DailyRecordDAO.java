@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.derun.entity.DailyRecord;
@@ -14,7 +14,9 @@ import com.derun.entity.DailyRecordMapper;
 
 @Repository
 public class DailyRecordDAO implements DailyRecordMapper{//,DailyLogMapper {
-	@Autowired
+	//@Autowired
+	//@Qualifier("sqlSession")
+	@Resource(name="sqlSession")
 	private SqlSession session;
 	private DailyRecordMapper mapper;//=session.getMapper(DailyRecordMapper.class);
 	

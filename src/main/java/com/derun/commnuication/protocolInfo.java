@@ -1,6 +1,6 @@
 package com.derun.commnuication;
 
-public class protocolInfo {
+public class ProtocolInfo {
 
 	public final static byte framebegin=(byte) 0xF0; 			//帧头
 	public final static byte frameend=(byte) 0xCC;   			//帧尾
@@ -31,7 +31,7 @@ public class protocolInfo {
 	public final static byte SETOILQUALITY=(byte) 0xBA; 			//设置油品密度
 	public final static byte BEGINOILLING=(byte) 0xBB; 			//开机加油
 	public final static byte STOPOILLING=(byte) 0xBC; 			//停止加油
-	public final static byte ONLINE=(byte) 0xBD; 				//在线
+	public final static byte ONLINE=(byte) 0xBD; 					//在线
 	public final static byte TAKECARD=(byte) 0xBF; 				//退卡
 	
 	public final static byte READPRICE=(byte) 0xC2; 				//读单价
@@ -47,7 +47,7 @@ public class protocolInfo {
 	
 	
 	
-	private byte[] sendbuff;
+//	private byte[] sendbuff;
 //	private byte[] recvbuff;
 	
 	//private final static byte checksumStartIndex=3; 
@@ -63,29 +63,29 @@ public class protocolInfo {
 	}
 	
 	//F0 03 01 A1 21 CC	
-	public void queryStatus(int channel,int ID,int timeout){
-		sendbuff=new byte[6];
-//		recvbuff=new byte[4];		
-		sendbuff[0]=(byte) (0xF0+channel); 	//帧头 +通道号
-		sendbuff[1]=(byte) 0x03;			//数据长度
-		sendbuff[2]=(byte) ID;             //枪号
-		sendbuff[3]=(byte) 0xA1;           //命令
-		sendbuff[4]=(byte) 0x00;//fnChecksumCacl(sendbuff,sendbuff[1]); //校验和
-		sendbuff[5]=(byte) 0xCC;			//帧尾
-		//System.out.println(sendbuff[4]);
-		//serialComm.WriteAndRead(recvbuff, sendbuff, timeout);
-	}
+//	public void queryStatus(int channel,int ID,int timeout){
+//		sendbuff=new byte[6];
+////		recvbuff=new byte[4];		
+//		sendbuff[0]=(byte) (0xF0+channel); 	//帧头 +通道号
+//		sendbuff[1]=(byte) 0x03;			//数据长度
+//		sendbuff[2]=(byte) ID;             //枪号
+//		sendbuff[3]=(byte) 0xA1;           //命令
+//		sendbuff[4]=(byte) 0x00;//fnChecksumCacl(sendbuff,sendbuff[1]); //校验和
+//		sendbuff[5]=(byte) 0xCC;			//帧尾
+//		//System.out.println(sendbuff[4]);
+//		//serialComm.WriteAndRead(recvbuff, sendbuff, timeout);
+//	}
 	
-	public void queryMethod(){
-		//sendbuff[4]=fnChecksumCacl(sendbuff,sendbuff[1]); //校验和
-		//serialPort.WriteAndRead(recvbuff, sendbuff, 1);
-	}
+//	public void queryMethod(){
+//		//sendbuff[4]=fnChecksumCacl(sendbuff,sendbuff[1]); //校验和
+//		//serialPort.WriteAndRead(recvbuff, sendbuff, 1);
+//	}
 	
-	public static void main(String[] args){
-		//serialPort.setParam(4800, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
-		//serialPort.open(); //打开端口
-		//new protocol().queryStatus(0,1,20);		
-		//serialPort.close();
-		return;
-	}
+//	public static void main(String[] args){
+//		//serialPort.setParam(4800, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+//		//serialPort.open(); //打开端口
+//		//new protocol().queryStatus(0,1,20);		
+//		//serialPort.close();
+//		return;
+//	}
 }

@@ -11,6 +11,7 @@ public class cardinfo {
 	private String tradeCounter;
 	private String lastOilDateTime;
 	private String lastOilValue;
+	private String oilType;
 	
 	public String getCardID() {
 		return cardID;
@@ -65,6 +66,12 @@ public class cardinfo {
 	}
 	public void setLastOilValue(String lastOilValue) {
 		this.lastOilValue = lastOilValue;
+	}
+	public String getOilType() {
+		return oilType;
+	}
+	public void setOilType(String oilType) {
+		this.oilType = oilType;
 	}
 	
 }

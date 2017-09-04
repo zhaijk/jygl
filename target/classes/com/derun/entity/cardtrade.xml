@@ -10,7 +10,7 @@
     	<where>
     		<if test="cardcode!=null and cardcode!='null'">
     			<!-- cardcode like CONCAT('%',#{cardcode},'%') -->
-    			and cardcode like '%${cardcode}%'
+    			and cardcode like '%#{cardcode}%'
     		</if>
     		<if test="oiltype!=null and oiltype!='null'">
     			and oiltype = #{oiltype}
@@ -27,16 +27,16 @@
     	</where>  
     	<choose>
     		<when test="index==0">
-    			order by TradeDate ,TradeTime ${orderby}  
+    			order by TradeDate ${orderby} ,TradeTime ${orderby}  
     		</when>
     		<when test="index==6">
-    			order by mileage ${orderby}
+    			order by volumn ${orderby}
     		</when>
     		<when test="index==7">
-    			order by SendFlag ${orderby}
+    			order by mileage ${orderby}
     		</when>
     		<otherwise>
-    			order by TradeDate ,TradeTime asc
+    			order by TradeDate asc ,TradeTime asc
     		</otherwise>
     	</choose>  	
     	<if test="limitM!=null and limitN!=null">
@@ -50,9 +50,9 @@
     	select count(*) as count from Card_Trade
     </select>
     <insert id="insertOne"  parameterType="cardtrade" >
-    	insert into  Card_Trade	 values(#{TradeDate},#{TradeTime},#{TradeType},#{GunCode},#{OilType},#{CardCode},
+    	insert into  Card_Trade	 values(#{TradeDate},#{TradeTime},#{TradeType},#{GunCode},#{oilType},#{CardCode},
     	        #{CardType},#{Volumn},#{mileage},#{Balance},#{SendFlag},#{StationID},
-    	        #{CardMoney},#{TFlag},#{OperatorName})
+    	        #{CardMoney},false,'加油站')
     </insert>
    <!-- (TradeDate ,TradeTime,TradeType,GunCode,OilType,CardCode,
     	                        CardType,Volumn,mileage,Balance,SendFlag,StationID,
@@ -62,5 +62,14 @@
    </select>
    <select id="findOnlineALL" resultType="cardtrade">
    		select *  from card_trade_online order by TradeDate desc,TradeTime DESC
-   </select> 	                        
+   </select> 
+   <delete id="clear" >
+   		delete from card_trade
+   </delete> 
+   <select id="findBy" resultType="cardtrade">
+   		select *  from card_trade where cardcode=#{0} and mileage=#{1} and tradetype='4' order by mileage desc limit 1
+   </select> 
+   <update id="updateOne" >
+   		update card_trade set tradetype=#{param3} where cardcode=#{param1} and mileage=#{param2}
+   </update> 	                        
 </mapper>  

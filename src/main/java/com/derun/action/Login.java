@@ -19,7 +19,7 @@ public class Login {
 
 	@RequestMapping(value="log_in",method=RequestMethod.POST)
 	public String log_in(String j_username,String j_password,HttpServletRequest request){
-		System.out.println("username: "+j_username+" password"+j_password);
+		//System.out.println("username: "+j_username+" password"+j_password);
 //		System.out.println(arg.getOperatorcode()+"-"+arg.getOperatorpassword());
 //		if(arg.getOperatorcode()==null)
 //			return "failure";		
@@ -79,4 +79,5 @@ public class Login {
 	//	System.out.println(name);
 	//	return "monitor.htm";
 	//}
+	
 } 

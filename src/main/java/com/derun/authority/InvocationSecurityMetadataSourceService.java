@@ -17,6 +17,7 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.stereotype.Service;
 
+import com.derun.commnuication.logger;
 import com.derun.dao.ResourceDAO;
 import com.derun.entity.Resource;
 
@@ -39,14 +40,14 @@ public class InvocationSecurityMetadataSourceService implements FilterInvocation
 			List<Resource> objLst=dao.findAll();
 			//System.out.println("MyInvocationSecurityMetadataSourceService: "+objLst);
 			for(Resource obj:objLst){
-				System.out.println("load Resources");
+				logger.debugLog("load Resources");
 				List<ConfigAttribute> configAs=new ArrayList<ConfigAttribute>();
-				System.out.println(dao.findBy(obj.getResource_uri()));
+				//logger.debugLog(dao.findBy(obj.getResource_uri()));
 				//ConfigAttribute  configA=new SecurityConfig("ROLE_"+dao.findBy(obj.getResource_uri()));	
 				ConfigAttribute  configA=null;
 				try{
-					System.out.println("uri: "+obj.getResource_uri());
-					System.out.println("result: "+ dao.findBy(obj.getResource_uri()));
+					logger.debugLog("uri: "+obj.getResource_uri());
+					logger.debugLog("result: "+ dao.findBy(obj.getResource_uri()));
 					List<String> objs=dao.findBy(obj.getResource_uri());
 					for(String roleName:objs){
 						configA=new SecurityConfig(roleName);						
@@ -54,7 +55,8 @@ public class InvocationSecurityMetadataSourceService implements FilterInvocation
 					}	
 					resourceMap.put(obj.getResource_uri(), configAs);
 				}catch(Exception e){
-					e.printStackTrace();
+					//e.printStackTrace();
+					logger.debugLog("º”‘ÿ◊ ‘¥¥ÌŒÛ");
 				}
 				
 				
@@ -68,8 +70,8 @@ public class InvocationSecurityMetadataSourceService implements FilterInvocation
 	public Collection<ConfigAttribute> getAttributes(Object arg0) throws IllegalArgumentException {
 		
 		String  url=((FilterInvocation)arg0).getRequestUrl();
-		System.out.println("url:  "+url);
-		
+		//System.out.println("url:  "+url);
+		//logger.debugLog(url);
 		if(resourceMap==null){
 			loadResourceDefine();
 		}		

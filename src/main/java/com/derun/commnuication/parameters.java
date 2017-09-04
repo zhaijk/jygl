@@ -15,7 +15,7 @@ public class parameters {
 		try {
 			pros.load(input);
 		} catch (IOException e) {
-			System.out.println("");
+			//System.out.println("");
 		}
 	}
 	private parameters(){
@@ -25,9 +25,9 @@ public class parameters {
 		return pros.getProperty(args);
 	}
 	
-	public static void main(String[] args) throws IOException{
-		System.out.println(parameters.getPors("port"));
-		
-
-	}
+//	public static void main(String[] args) throws IOException{
+//		System.out.println(parameters.getPors("port"));
+//		
+//
+//	}
 }

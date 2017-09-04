@@ -1,15 +1,20 @@
 package com.derun.dao;
 
 import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import com.derun.entity.BlackListMapper;
 import com.derun.entity.Blacklist;
 
 @Repository
 public class BlacklistDAO implements BlackListMapper{
-	@Autowired
+	
+//	@Autowired
+//	@Qualifier("sqlSession")
+	@Resource(name="sqlSession")
 	private SqlSession session;
 	@Override
 	public List<Blacklist> findALL() {
@@ -27,8 +32,8 @@ public class BlacklistDAO implements BlackListMapper{
 	}
 
 	@Override
-	public int insertONE(Blacklist obj) {
-		return session.getMapper(BlackListMapper.class).insertONE(obj);
+	public int insertOne(Blacklist obj) {
+		return session.getMapper(BlackListMapper.class).insertOne(obj);
 	}
 
 	@Override

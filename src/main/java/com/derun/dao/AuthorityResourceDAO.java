@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.derun.entity.AuthorityResource;
@@ -15,6 +16,8 @@ import com.derun.entity.AuthorityResourceMapper;
 public class AuthorityResourceDAO implements AuthorityResourceMapper{
 
 	@Autowired 
+	@Qualifier("sqlSession")
+	//@Resource(name="sqlSession")
 	private SqlSession session;
 	private AuthorityResourceMapper mapper;
 	

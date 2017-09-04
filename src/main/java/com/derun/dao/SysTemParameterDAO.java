@@ -6,15 +6,16 @@ import com.derun.entity.SysParaMapper;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 
-@Repository
+@Repository 
 public class SysTemParameterDAO implements SysParaMapper{
 
-	@Autowired
+	@Resource(name="sqlSession")
 	private SqlSession session;
 	
 	@Override
@@ -35,6 +36,11 @@ public class SysTemParameterDAO implements SysParaMapper{
 	@Override
 	public int updateOne(SysPara arg) {
 		return session.getMapper(SysParaMapper.class).updateOne(arg);
+	}
+
+	@Override
+	public SysPara findOne() {
+		return session.getMapper(SysParaMapper.class).findOne();
 	}
 	
 }

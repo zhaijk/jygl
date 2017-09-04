@@ -6,13 +6,16 @@ import com.derun.entity.User_Role;
 import com.derun.entity.User_RoleMapper;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class User_RoleDAO implements User_RoleMapper{
-	@Autowired
+	//@Autowired
+	//@Qualifier("sqlSession")
+	@Resource(name="sqlSession")
 	private SqlSession session;
 	private User_RoleMapper mapper; 
 	

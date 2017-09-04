@@ -2,17 +2,20 @@ package com.derun.dao;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.derun.entity.CarType;
 import com.derun.entity.CarTypeMapper;
 
-@Repository
+@Repository//("sqlSessionFactory")
 public class CarTypeDAO implements CarTypeMapper{
 
-	@Autowired
+	//@Autowired
+	//@Qualifier("sqlSession")
+	@Resource(name="sqlSession")
 	private SqlSession sqlSession;
 	
 	@Override
@@ -34,6 +37,10 @@ public class CarTypeDAO implements CarTypeMapper{
 	@Override
 	public int deleteOne(CarType arg) {
 		return sqlSession.getMapper(CarTypeMapper.class).deleteOne(arg);
+	}
+	@Override
+	public int clear() {
+		return sqlSession.getMapper(CarTypeMapper.class).clear();
 	}
 
 }

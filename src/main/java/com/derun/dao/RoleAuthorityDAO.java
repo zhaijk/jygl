@@ -3,9 +3,9 @@ package com.derun.dao;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.derun.entity.Role_authority;
@@ -14,7 +14,9 @@ import com.derun.entity.Role_authorityMapper;
 @Repository
 public class RoleAuthorityDAO implements Role_authorityMapper{
 	
-	@Autowired
+	//@Autowired
+	//@Qualifier("sqlSession")
+	@Resource(name="sqlSession")
 	private SqlSession session;
 	private Role_authorityMapper mapper;
 	

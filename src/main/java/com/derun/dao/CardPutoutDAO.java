@@ -6,18 +6,17 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSession;
-
 import org.springframework.stereotype.Repository;
 
 import com.derun.entity.CardPutout;
 import com.derun.entity.CardPutoutMapper;
 import com.derun.entity.QuotaRecordMapper;
 
-@Repository
+@Repository//("sqlSessionFactory")
 public class CardPutoutDAO implements CardPutoutMapper ,QuotaRecordMapper{
 
 	//@Autowired
-	//private SqlSession session;
+	//@Qualifier("sqlSession")
 	@Resource(name="sqlSession")
 	private SqlSession session;
 	
@@ -35,7 +34,10 @@ public class CardPutoutDAO implements CardPutoutMapper ,QuotaRecordMapper{
 	public List<CardPutout> findBy(CardPutout obj) {
 		return session.getMapper(CardPutoutMapper.class).findBy(obj);
 	}
-
+	@Override
+	public List<CardPutout> findByGuncode(String guncode) {
+		return session.getMapper(CardPutoutMapper.class).findByGuncode(guncode);
+	}
 	@Override
 	public int clear() {
 		return session.getMapper(CardPutoutMapper.class).clear();

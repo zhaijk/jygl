@@ -77,8 +77,8 @@ public class CardTradeQuery {
 		//System.out.println(start+" "+length  +" "+param.getCarcode()+" "+param.getCardcode()+" "+param.getGuncode()+" "+param.getOiltype()+" "+param.getFrom()+" "+param.getTo());
 		
 		Map<String,Object> paraMap=new HashMap<String ,Object>();
-		paraMap.put("cardcode", param.getCardcode());	//¿¨ºÅ
-		paraMap.put("guncode", new Integer(param.getGuncode()).toString()); //Ç¹ºÅ
+		paraMap.put("cardcode", param.getCardcode().equals("")?"null":param.getCardcode());	//¿¨ºÅ
+		paraMap.put("guncode", param.getGuncode()); 	//Ç¹ºÅ
 		paraMap.put("oiltype", param.getOiltype()); 	//ÓÍÆ·
 		paraMap.put("fromDate", param.getFrom());		//from ÈÕÆÚ
 		paraMap.put("dateTo", param.getTo());			//to   ÈÕÆÚ		

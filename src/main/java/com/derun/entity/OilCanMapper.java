@@ -24,4 +24,7 @@ public interface OilCanMapper {
 	@Update("update oilcan_parameter set oilType=#{oilType},cubage=#{cubage},alarmUpperLimit=#{alarmUpperLimit},alarmLowerLimit=#{alarmLowerLimit}where jarcode=#{jarCode} ") 
 	public int updateOne(OilCan arg);
 	
+	@Delete("delete from oilcan_parameter")
+	public int clear();	
+	
 }

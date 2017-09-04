@@ -2,19 +2,19 @@ package com.derun.dao;
 
 import java.util.List;
 
-import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-//import org.springframework.transaction.annotation.Propagation;
-//import org.springframework.transaction.annotation.Transactional;
+import javax.annotation.Resource;
 
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.stereotype.Repository;
 import com.derun.entity.cheerMachine;
 import com.derun.entity.cheerinfoMapper;
 
 @Repository
 public class CheerinfoDAO implements cheerinfoMapper{
 
-	@Autowired
+	//@Autowired
+	//@Qualifier("sqlSession")
+	@Resource(name="sqlSession")
 	private SqlSession sqlSession;
 
 	public List<cheerMachine> findALL() {
@@ -24,7 +24,9 @@ public class CheerinfoDAO implements cheerinfoMapper{
 	public String findOilType(String guncode) {
 		return sqlSession.getMapper(cheerinfoMapper.class).findOilType(guncode);
 	}
-
+	public String findOilTypeCode(String guncode) {
+		return sqlSession.getMapper(cheerinfoMapper.class).findOilTypeCode(guncode);
+	}
 	@Override
 	public int updateOne(cheerMachine obj) {
 		return sqlSession.getMapper(cheerinfoMapper.class).updateOne(obj);
@@ -39,6 +41,11 @@ public class CheerinfoDAO implements cheerinfoMapper{
 	@Override
 	public int deleteOne(cheerMachine obj) {
 		return sqlSession.getMapper(cheerinfoMapper.class).deleteOne(obj);
+	}
+
+	@Override
+	public int clear() {
+		return sqlSession.getMapper(cheerinfoMapper.class).clear();
 	}
 	
 }

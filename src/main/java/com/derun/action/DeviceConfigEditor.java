@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.derun.authority.ManagerDeviceInfo;
+//import com.derun.authority.ManagerDeviceInfo;
 import com.derun.dao.CarTypeDAO;
 import com.derun.dao.CheerinfoDAO;
 import com.derun.dao.OilCanDAO;
@@ -30,8 +30,8 @@ public class DeviceConfigEditor {
 	private CarTypeDAO carTypeDAO;
 	@Autowired
 	private OilCanDAO oilcanDAO;	
-	@Autowired 
-	private ManagerDeviceInfo info;
+	//@Autowired 
+	//private ManagerDeviceInfo info;
 	
 	@RequestMapping(value="/deviceInfoManager.htm",method=RequestMethod.GET)
 	public String init(ModelMap map){

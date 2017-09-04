@@ -174,6 +174,7 @@
 </div>
 </div>
 </div>
+ <!-- 
 <div class="col-sm-6 col-md-6">
 <div class="block-flat">
 <div class="header">
@@ -216,7 +217,7 @@
 </table>
 </div>
 </div>
-</div>
+</div>-->
 </div>
 </div>
 </div>

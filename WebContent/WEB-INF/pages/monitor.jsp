@@ -4,52 +4,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-</head>
-<body >
-	<div class="container-fluid" id="pcont">
-	<div class="stats_bar">
-		<div class="butpro butstyle" data-step="2"	>
-					<div class="sub">
-						<h2>日加油次数</h2>
-						<span id="total_clientes">183次</span>
-					</div>
-					<div class="stat">
-						<span class="gt">13,5%</span>
-					</div>
-				</div>
-				<div class="butpro butstyle">
-					<div class="sub">
-						<h2>日加油总量</h2>
-						<span>1123.6 L</span>
-					</div>
-					<div class="stat">
-						<span class="up">13,5%</span>
-					</div>
-				</div>
-				<div class="butpro butstyle">
-					<div class="sub">
-						<h2>0# 汽油</h2>
-						<span>1225.8 L</span>
-					</div>
-					<div class="stat">
-						<span class="down"> 20,7%</span>
-					</div>
-				</div>
-				<div class="butpro butstyle">
-					<div class="sub">
-						<h2>存油量</h2>
-						<span>28765 L</span>
-					</div>
-					<div class="stat">
-						<span class="equal"></span>
-					</div>
-				</div>
-				
-			</div>
-
-
-			<c:forEach items="${cheersInfo}" var="value" varStatus="counter">
-				<div class="col-sm-6 col-md-4 col-lg-3" >
+</head> 
+<body>
+	<div class="container-fluid" >
+			<c:forEach items="${cheersInfo}" var="value" varStatus="counter" >
+				<div class="col-md-3 ">
 					<div class="panel-group accordion" id="accordion2${value.gunID}"> 
 						<div class="panel panel-default" >
 							<div class="panel-heading">
@@ -63,38 +22,40 @@
 											<tr >
 												<td id="jyl${counter.count}" colspan="2" align="center"
 													style="background-color: black; font-family: Pixel LCD7; font-size: 250%; color: red">
-													1234.56							
+													0000.00							
 												</td>
-											</tr>
-										</table>
-										
+											</tr>											
+										</table>										
 									</a>
 								</h4>
 							</div>
 							<div id="collapse${value.gunID}" class="panel-collapse collapse in">
 								<div class="panel-body no-padding">
-									<table class="table table-hover">
+									<table>										
 										<tr>
-											<td align="center" colspan="2">
-											<button onclick="setonoff(${counter.count})" class="btn btn-danger btn-lg btn-block" 
+											<td colspan="2" ><!-- setonoff(${counter.count}); -->
+											<button style="position:relative;left:-5px"onclick="setonoff(${counter.count});" class="btn btn-danger btn-block btn-lg" 
 											        id="status${counter.count}">等待插卡....</button>
 											</td>
 										</tr>
 										<tr>
 											<td class="title" id="title1${counter.count}">上次加油</td>
-											<td align="center" id="value1${counter.count}">12.34</td>
+											<td align="center" id="value1${counter.count}">00.00</td>
 										<tr>
 											<td class="title" id="title2${counter.count}">上次日期</td>
-											<td align="center" id="value2${counter.count}">2015-01-01</td>
+											<td align="center" id="value2${counter.count}">0000-00-00</td>
 										</tr>
 										<tr>
 											<td class="title" id="title3${counter.count}">卡号</td>
-											<td align="center" id="value3${counter.count}">720000123456</td>
+											<td align="center" id="value3${counter.count}"></td>
 										</tr>
 										<tr>
-											<td class="title" id="title4${counter.count}">车辆类型</td>
-											<td align="center"><image src="images/bigbus.gif" id="value4${counter.count}"></td>
+											<td class="title"  id="title4${counter.count}">车辆类型</td>
+											<td align="center" id="value4${counter.count}"><image src="images/car.gif"></td>
 										</tr>
+										<tr>
+											<td style="font-size:16px;font-weight:bold"align="center" colspan="2" id="commstatus${counter.count}">通讯失败</td>
+										</tr>										
 										<!-- 
 										<tr>
 											<td align="center" colspan="2"><image src="images/comm.jpg" style="width:100%;"></td>
